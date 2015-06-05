@@ -8,7 +8,7 @@ angular.module('leafcutter', [])
 				options: '=?'
 			},
 			transclude: false,
-        	template: '<div class="leafcutter"></div>',
+			template: '<div class="leafcutter"></div>',
 			controller: ["$scope", function ($scope) {
 			}],
 			link: function(scope, element, attrs, controller) {
@@ -20,7 +20,7 @@ angular.module('leafcutter', [])
 				};
 
 				var default_options = {
-		            attributionControl: false
+					attributionControl: false
 				};
 
 				scope.view = angular.extend(default_view, scope.view);
@@ -34,6 +34,10 @@ angular.module('leafcutter', [])
 				scope.map.setView([scope.view.lat, scope.view.lon], scope.view.zoom);
 
 				leafcutterdata.setMap(attrs.id, scope.map);
+
+				scope.$on('$destroy', function () {
+					leafcutterdata.reset();
+				});
 
 			}
 		}
@@ -59,6 +63,10 @@ angular.module('leafcutter').service('leafcutterdata', function($q) {
 			maps[id] = deferred;
 		}
 		return maps[id].promise;
+	};
+
+	this.reset = function() {
+		maps = {};
 	};
 
 });
