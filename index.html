@@ -53,15 +53,15 @@ app.controller("testcontroller", function($scope, leafcuttermaps) {
 	leafcuttermaps.getMap("map1").then(function(map) {
 		map.map.setView([30, 20], 0);
 		var layer1 = L.geoJson(feature1);
-		map.addlayer(layer1);
+		map.addLayer(layer1);
 		var layer2 = L.geoJson(feature2);
-		map.addlayer(layer2);
+		map.addLayer(layer2);
 	});
 	
 	leafcuttermaps.getMap("map2").then(function(map) {
 		map.map.setView([30, 20], 1);
 		var layer2 = L.geoJson(feature2);
-		map.addlayer(layer2);
+		map.addLayer(layer2);
 	});
 
 });

@@ -14,7 +14,7 @@ leafcutter.directive("leaflet", function(leafcuttermaps) {
 			L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {}).addTo(scope.map);
 			leafcuttermaps.setMap(attrs.map, {
 				map: scope.map,
-				addlayer: function(layer) {
+				addLayer: function(layer) {
 					layer.addTo(scope.map);
 					scope.layers.push(layer);
 				},
