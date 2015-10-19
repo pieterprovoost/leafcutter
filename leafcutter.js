@@ -7,22 +7,30 @@ leafcutter.directive("leaflet", function(leafcuttermaps) {
 			name: "="
         },
 		link: function(scope, element, attrs) {
-			scope.layers = [];
+			scope.layers = {};
 			scope.map = L.map(element[0], {
 				attributionControl: false
 			}).setView([30, 20], 2);
-			L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {}).addTo(scope.map);
+			var baselayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {}).addTo(scope.map);
 			leafcuttermaps.setMap(attrs.map, {
 				map: scope.map,
-				addLayer: function(layer) {
+				addLayer: function(name, layer) {
 					layer.addTo(scope.map);
-					scope.layers.push(layer);
+					scope.layers[name] = layer;
+				},
+				removeLayer: function(name) {
+					if (scope.layers.hasOwnProperty(name)) {
+						scope.map.removeLayer(scope.layers[name]);
+						delete scope.layers[name];	
+					}
 				},
 				reset: function() {
-					for (l in scope.layers) {
-						scope.map.removeLayer(scope.layers[l]);
+					for (var layer in scope.layers) {
+						if (scope.layers.hasOwnProperty(layer)) {
+							scope.map.removeLayer(scope.layers[layer]);
+						}
 					}
-					scope.layers = [];
+					scope.layers = {};
 				}
 			});
 			scope.$on('$destroy', function () {
