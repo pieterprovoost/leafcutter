@@ -5,15 +5,18 @@ leafcutter.directive("leaflet", function(leafcuttermaps) {
 		restrict: "EA",
 		scope: {
 			name: "="
-        },
+		},
 		link: function(scope, element, attrs) {
 			scope.layers = {};
 			scope.map = L.map(element[0], {
-				attributionControl: false
+				attributionControl: false,
+				zoomControl: false
 			}).setView([30, 20], 2);
-			var baselayer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {}).addTo(scope.map);
+			var baselayer = L.tileLayer("http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {}).addTo(scope.map);
+			var zoom = L.control.zoom({position: "topleft"}).addTo(scope.map);
 			leafcuttermaps.setMap(attrs.map, {
 				map: scope.map,
+				zoomcontrol: zoom,
 				addLayer: function(name, layer) {
 					layer.addTo(scope.map);
 					scope.layers[name] = layer;
@@ -33,7 +36,7 @@ leafcutter.directive("leaflet", function(leafcuttermaps) {
 					scope.layers = {};
 				}
 			});
-			scope.$on('$destroy', function () {
+			scope.$on("$destroy", function () {
 				leafcuttermaps.reset();
 			});
 		}
