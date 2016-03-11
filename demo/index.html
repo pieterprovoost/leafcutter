@@ -11,17 +11,24 @@ leaflet {
 </head>
 <body ng-app="app">
 
-	<div ng-controller="testcontroller">
-		<button ng-click="click()">test</button>
-		<h2>map 1</h2>
+	<div id="div1" ng-controller="controller1">
+		<h2>controller 1, map 1</h2>
 		<leaflet map="map1"></leaflet>
-		<h2>map 2</h2>
+		<button ng-click="click1()">reset map</button>
+		<button ng-click="click2()">remove element</button>
+		<h2>controller 1, map 2</h2>
 		<leaflet map="map2"></leaflet>
+	</div>
+
+	<div ng-controller="controller2">
+		<h2>controller 2, map 3</h2>
+		<leaflet map="map3"></leaflet>
+		<button ng-click="click3()">reset map</button>
 	</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 <script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
-<script src="leafcutter.js"></script>
+<script src="../leafcutter.js"></script>
 <script>
 
 var feature1 = {
@@ -42,26 +49,46 @@ var feature2 = {
 
 var app = angular.module("app", ["leafcutter"]);
 
-app.controller("testcontroller", function($scope, leafcuttermaps) {
+app.controller("controller1", function($scope, leafcuttermaps) {
 
-	$scope.click = function() {
+	$scope.click1 = function() {
 		leafcuttermaps.getMap("map1").then(function(map) {
 			map.reset();
 		});
 	};
-	
+
+	$scope.click2 = function() {
+		angular.element(document.querySelector("#div1")).remove();
+	};
+
 	leafcuttermaps.getMap("map1").then(function(map) {
 		map.map.setView([30, 20], 0);
 		var layer1 = L.geoJson(feature1);
-		map.addLayer(layer1);
+		map.addLayer("layer1", layer1);
 		var layer2 = L.geoJson(feature2);
-		map.addLayer(layer2);
+		map.addLayer("layer2", layer2);
 	});
 	
 	leafcuttermaps.getMap("map2").then(function(map) {
 		map.map.setView([30, 20], 1);
 		var layer2 = L.geoJson(feature2);
-		map.addLayer(layer2);
+		map.addLayer("layer2", layer2);
+	});
+
+});
+
+app.controller("controller2", function($scope, leafcuttermaps) {
+
+	$scope.click3 = function() {
+		leafcuttermaps.getMap("map3").then(function(map) {
+			map.reset();
+		});
+	};
+
+	leafcuttermaps.getMap("map3").then(function(map) {
+		map.map.setView([30, 40], 1);
+		var layer2 = L.geoJson(feature2);
+		map.addLayer("layer2", layer2);
 	});
 
 });

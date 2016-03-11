@@ -1,3 +1,3 @@
 # leafcutter
 
-Very basic Leaflet directive
+Basic AngularJS directive for Leaflet.
